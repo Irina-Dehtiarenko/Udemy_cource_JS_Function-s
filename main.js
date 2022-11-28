@@ -157,65 +157,129 @@ Test data for bonus:
 
 */
 
-const poll = {
-  question: 'What is your favourite programming language?',
-  options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
-  // This generates [0, 0, 0, 0]. More in the next section!
-  answers: new Array(4).fill(0),
+// const poll = {
+//   question: 'What is your favourite programming language?',
+//   options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
+//   // This generates [0, 0, 0, 0]. More in the next section!
+//   answers: new Array(4).fill(0),
 
-  registerNewAnswer() {
-    const answerNumber = Number(
-      prompt(
-        `${this.question}\n${this.options.join('\n')}\n(Write option number)`
-      )
-    );
-    //My version
+//   registerNewAnswer() {
+//     const answerNumber = Number(
+//       prompt(
+//         `${this.question}\n${this.options.join('\n')}\n(Write option number)`
+//       )
+//     );
+//My version
 
-    // if (answerNumber <= 3 && answerNumber >= 0) {
-    //   if (answerNumber === 0) {
-    //     this.answers[0]++;
-    //   } else if (answerNumber === 1) {
-    //     this.answers[1]++;
-    //   } else if (answerNumber === 2) {
-    //     this.answers[2]++;
-    //   } else if (answerNumber === 3) {
-    //     this.answers[3]++;
-    //   }
-    //     } else {
-    //       alert('Please write the correct number');
-    //       this.registerNewAnswer();
-    //     }
-    //     console.log(this.answers);
-    //     this.displayResults(this.answers);
+// if (answerNumber <= 3 && answerNumber >= 0) {
+//   if (answerNumber === 0) {
+//     this.answers[0]++;
+//   } else if (answerNumber === 1) {
+//     this.answers[1]++;
+//   } else if (answerNumber === 2) {
+//     this.answers[2]++;
+//   } else if (answerNumber === 3) {
+//     this.answers[3]++;
+//   }
+//     } else {
+//       alert('Please write the correct number');
+//       this.registerNewAnswer();
+//     }
+//     console.log(this.answers);
+//     this.displayResults(this.answers);
 
-    // Teacher's solution:
+// Teacher's solution:
 
-    typeof answerNumber === 'number' &&
-      answerNumber < this.answers.length &&
-      this.answers[answerNumber]++;
+//     typeof answerNumber === 'number' &&
+//       answerNumber < this.answers.length &&
+//       this.answers[answerNumber]++;
 
-    //   my solution
-    // this.displayResults(this.answers);
+//     //   my solution
+//     // this.displayResults(this.answers);
 
-    // teacher's sol:
-    this.displayResults('string');
-  },
+//     // teacher's sol:
+//     this.displayResults('string');
+//   },
 
-  displayResults(type = 'array') {
-    if (type === 'array') {
-      console.log(this.answers);
-    } else if (type === 'string') {
-      console.log(`Poll results are ${this.answers.join(', ')}`);
-    }
-  },
+//   displayResults(type = 'array') {
+//     if (type === 'array') {
+//       console.log(this.answers);
+//     } else if (type === 'string') {
+//       console.log(`Poll results are ${this.answers.join(', ')}`);
+//     }
+//   },
+// };
+
+// document
+//   .querySelector('.poll')
+//   .addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+// const data1 = [5, 2, 3];
+// const data2 = [1, 5, 3, 9, 6, 1];
+
+// poll.displayResults.call({ answers: data1 }, 'string');
+// poll.displayResults.call({ answers: data2 });
+
+// CLOUSURES
+
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
 };
 
-document
-  .querySelector('.poll')
-  .addEventListener('click', poll.registerNewAnswer.bind(poll));
+const booker = secureBooking();
 
-const data1 = [5, 2, 3];
-const data2 = [1, 5, 3, 9, 6, 1];
+booker();
 
-poll.displayResults.call({ answers: data1 }, 'string');
-poll.displayResults.call({ answers: data2 });
+console.dir(booker);
+
+// More clousers exaapmles:
+
+// Example 1
+let f;
+
+const g = function () {
+  const a = 23;
+  f = function () {
+    console.log(a * 2);
+  };
+};
+
+const h = function () {
+  const b = 777;
+  f = function () {
+    console.log(b * 2);
+  };
+};
+
+g();
+f(); //to jest inna niż ta co poniżej(from g)
+
+// re-assigning f function
+h();
+f(); //from h
+
+console.dir(f); //nie ma dostępu do a, tylko do b(w tym momęcie)
+
+// Example 2
+const boardPassengers = function (n, wait) {
+  // 1.
+  const perGroup = n / 3; //ma priorytet
+
+  // 2. creating without wywołania functio0n
+  setTimeout(() => {
+    // 4. po 3s
+    console.log(`We are now boarding all ${n} passengers`);
+    console.log(`There are 3 groups each with ${perGroup} passengers`);
+  }, 1000);
+
+  // 3.
+  console.log(`Will start boarding in ${wait} seconds`);
+};
+
+const perGroup = 1000; ///jest mniej ważne
+boardPassengers(180, 3);
